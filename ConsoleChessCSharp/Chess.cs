@@ -2,44 +2,51 @@
 {
     public class Chess
     {
-        private static readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
-        static readonly byte size = 8;
-        private static char[,]? chessboard;
+        private readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+        readonly byte size = 8;
+        private char[,]? chessboard;
+        private bool[,]? isWhite;
         private readonly char emptyCell = ' ';
         private bool isInit;
         private bool isEmptyBoard = false;
-        public Dictionary<string, char> pieces = Pieces();
-        public bool IsEmptyBoard 
+        public Dictionary<string, Tuple<char, string>> pieces = Pieces();
+        public bool IsEmptyBoard
         {
-            set 
+            set
             {
                 if (isInit == true)
                     throw new Exception("Chessboard has already been initialized");
                 else
                     isEmptyBoard = value;
-            } 
+            }
         }
+
+
 
         // Create (draw) a chessboard
         public void InitBoard()
         {
+            Console.Clear();
             isInit = true;
             const string top = " --------------------------------";
             chessboard = new char[size, size];
+            isWhite = new bool[size, size];
 
             // Assign an empty field for all cells
             for (int i = 0; i < chessboard.GetLength(0); i++)
-                for (int j = 0; j < chessboard.GetLength(1); j++)
+                for (int j = 0; j < chessboard.GetLength(1); j++) 
+                { 
                     chessboard[i, j] = emptyCell;
-
+                }
 
             // Assign a character of figure for not empty cells
             if (!isEmptyBoard)
             {
-                foreach (KeyValuePair<string, char> cell in pieces)
+                foreach (KeyValuePair<string, Tuple<char, string>> cell in pieces)
                 {
                     GetPosition(cell.Key, out byte posX, out byte posY);
-                    chessboard[posX, posY] = cell.Value != emptyCell ? cell.Value : emptyCell;
+                    chessboard[posX, posY] = cell.Value.Item1 != emptyCell ? cell.Value.Item1 : emptyCell;
+                    isWhite[posX, posY] = cell.Value.Item2 == "white";
                 }
             }
 
@@ -48,8 +55,20 @@
             {
                 Console.WriteLine("  " + top);
                 Console.Write(" " + (size - y));
-                for (int x = 0; x < size; x++)
-                    Console.Write("|" + (chessboard[x, y] != emptyCell ? " " + chessboard[x, y] + " " : "   "));
+                for (int x = 0; x < size; x++) 
+                {
+                    Console.Write("|");
+                    if (!isWhite[x, y]) 
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write(chessboard[x, y] != emptyCell ? " " + chessboard[x, y] + " " : "   ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        Console.Write(chessboard[x, y] != emptyCell ? " " + chessboard[x, y] + " " : "   ");
+                    }
+                }
                 Console.WriteLine("|");
             }
             Console.WriteLine("  " + top);
@@ -57,6 +76,8 @@
             for (int i = 0; i < size; i++)
                 Console.Write(" " + letters[i] + "  ");
         }
+
+
 
         // Convert position to array coordinate values
         private void GetPosition(string cellPosition, out byte posX, out byte posY)
@@ -126,13 +147,16 @@
             }
         }
 
+
+
         // Add a piece to specific cell
-        public void AddPiece(char piece, string cell)
+        public void AddPiece(string cell, Tuple<char, string> value)
         {
-            pieces.Add(cell, piece);
+            pieces.Add(cell, value);
         }
 
-        // DOESN'T WORKS
+
+
         // Move a piece to a specific cell
         public void Move(string from, string to)
         {
@@ -140,30 +164,52 @@
             pieces.Remove(from);
         }
 
+
+
         // List of pieces, assigned to corresponding cells
-        private static Dictionary<string, char> Pieces()
+        private static Dictionary<string, Tuple<char, string>> Pieces()
         {
-            Dictionary<string, char> dict = new();
+            Dictionary<string, Tuple<char, string>> pieces = new();
 
-            dict["A1"] = 'r';
-            dict["B1"] = 'k';
-            dict["C1"] = 'b';
-            dict["D1"] = 'q';
-            dict["E1"] = 'K';
-            dict["F1"] = 'b';
-            dict["G1"] = 'k';
-            dict["H1"] = 'r';
+            // Black pieces
+            pieces["A8"] = new Tuple<char, string>('r', "black");
+            pieces["B8"] = new Tuple<char, string>('k', "black");
+            pieces["C8"] = new Tuple<char, string>('b', "black");
+            pieces["D8"] = new Tuple<char, string>('q', "black");
+            pieces["E8"] = new Tuple<char, string>('K', "black");
+            pieces["F8"] = new Tuple<char, string>('b', "black");
+            pieces["G8"] = new Tuple<char, string>('k', "black");
+            pieces["H8"] = new Tuple<char, string>('r', "black");
 
-            dict["A2"] = 'p';
-            dict["B2"] = 'p';
-            dict["C2"] = 'p';
-            dict["D2"] = 'p';
-            dict["E2"] = 'p';
-            dict["F2"] = 'p';
-            dict["G2"] = 'p';
-            dict["H2"] = 'p';
+            pieces["A7"] = new Tuple<char, string>('p', "black");
+            pieces["B7"] = new Tuple<char, string>('p', "black");
+            pieces["C7"] = new Tuple<char, string>('p', "black");
+            pieces["D7"] = new Tuple<char, string>('p', "black");
+            pieces["E7"] = new Tuple<char, string>('p', "black");
+            pieces["F7"] = new Tuple<char, string>('p', "black");
+            pieces["G7"] = new Tuple<char, string>('p', "black");
+            pieces["H7"] = new Tuple<char, string>('p', "black");
 
-            return dict;
+            // White pieces
+            pieces["A1"] = new Tuple<char, string>('r', "white");
+            pieces["B1"] = new Tuple<char, string>('k', "white");
+            pieces["C1"] = new Tuple<char, string>('b', "white");
+            pieces["D1"] = new Tuple<char, string>('q', "white");
+            pieces["E1"] = new Tuple<char, string>('K', "white");
+            pieces["F1"] = new Tuple<char, string>('b', "white");
+            pieces["G1"] = new Tuple<char, string>('k', "white");
+            pieces["H1"] = new Tuple<char, string>('r', "white");
+
+            pieces["A2"] = new Tuple<char, string>('p', "white");
+            pieces["B2"] = new Tuple<char, string>('p', "white");
+            pieces["C2"] = new Tuple<char, string>('p', "white");
+            pieces["D2"] = new Tuple<char, string>('p', "white");
+            pieces["E2"] = new Tuple<char, string>('p', "white");
+            pieces["F2"] = new Tuple<char, string>('p', "white");
+            pieces["G2"] = new Tuple<char, string>('p', "white");
+            pieces["H2"] = new Tuple<char, string>('p', "white");
+
+            return pieces;
         }
     }
 }

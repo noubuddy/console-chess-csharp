@@ -5,7 +5,22 @@
         public static void Main(string[] args)
         {
             Chess chess = new();
-            chess.InitBoard();
+
+            while (true)
+            {
+                chess.InitBoard();
+
+                Console.Write("\n\nFrom: ");
+                string from = Console.ReadLine().ToUpper();
+
+                chess.InitBoard();
+
+                Console.Write("\n\nTo: ");
+                string to = Console.ReadLine().ToUpper();
+                chess.Move(from, to);
+
+                chess.InitBoard();
+            }
 
             Console.ReadKey();
         }
