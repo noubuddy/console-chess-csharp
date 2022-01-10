@@ -11,18 +11,17 @@
                 chess.InitBoard();
 
                 Console.Write("\n\nFrom: ");
-                string from = Console.ReadLine().ToUpper();
+                string from = Console.ReadLine()!.ToUpper();
 
                 chess.InitBoard();
 
                 Console.Write("\n\nTo: ");
-                string to = Console.ReadLine().ToUpper();
+                string to = Console.ReadLine()!.ToUpper();
+                
                 chess.Move(from, to);
 
                 chess.InitBoard();
             }
-
-            Console.ReadKey();
         }
     }
 }
