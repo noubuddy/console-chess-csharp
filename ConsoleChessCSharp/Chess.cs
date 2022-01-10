@@ -24,7 +24,7 @@
 
 
         // Create (draw) a chessboard
-        public void InitBoard()
+        public void Init()
         {
             Console.Clear();
             isInit = true;

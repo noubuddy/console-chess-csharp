@@ -8,19 +8,19 @@
 
             while (true)
             {
-                chess.InitBoard();
+                chess.Init();
 
                 Console.Write("\n\nFrom: ");
                 string from = Console.ReadLine()!.ToUpper();
 
-                chess.InitBoard();
+                chess.Init();
 
                 Console.Write("\n\nTo: ");
                 string to = Console.ReadLine()!.ToUpper();
-                
+
                 chess.Move(from, to);
 
-                chess.InitBoard();
+                chess.Init();
             }
         }
     }
