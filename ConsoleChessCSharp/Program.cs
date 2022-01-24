@@ -1,27 +1,35 @@
-﻿namespace ConsoleChessCSharp
+﻿using ConsoleChessCSharp.Pieces;
+using System.Collections.Generic;
+using System.Runtime;
+
+namespace ConsoleChessCSharp
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            Chess chess = new();
+	public class Program
+	{
+		public static string? from;
+		public static void Main(string[] args)
+		{
+			Draw board = new();
+			Chess chess = new();
 
-            while (true)
-            {
-                chess.Init();
+			while (true)
+			{
+				from = null;
 
-                Console.Write("\n\nFrom: ");
-                string from = Console.ReadLine()!.ToUpper();
+				board.Init();
 
-                chess.Init();
+				Console.Write("\n\nFrom: ");
+				from = Console.ReadLine()!.ToUpper();
 
-                Console.Write("\n\nTo: ");
-                string to = Console.ReadLine()!.ToUpper();
+                board.Init();
 
-                chess.Move(from, to);
+				Console.Write("\n\nTo: ");
+				string to = Console.ReadLine()!.ToUpper();
 
-                chess.Init();
-            }
-        }
-    }
+				chess.Move(from, to);
+
+				board.Init();
+			}
+		}
+	}
 }
