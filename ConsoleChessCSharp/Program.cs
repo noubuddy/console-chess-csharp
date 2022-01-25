@@ -1,8 +1,4 @@
-﻿using ConsoleChessCSharp.Pieces;
-using System.Collections.Generic;
-using System.Runtime;
-
-namespace ConsoleChessCSharp
+﻿namespace ConsoleChessCSharp
 {
 	public class Program
 	{
@@ -12,24 +8,24 @@ namespace ConsoleChessCSharp
 			Draw board = new();
 			Chess chess = new();
 
-			while (true)
-			{
-				from = null;
+            while (true)
+            {
+                board.Init();
 
-				board.Init();
-
-				Console.Write("\n\nFrom: ");
-				from = Console.ReadLine()!.ToUpper();
+                Console.Write("\n\nFrom: ");
+                from = Console.ReadLine()!.ToUpper();
 
                 board.Init();
 
-				Console.Write("\n\nTo: ");
-				string to = Console.ReadLine()!.ToUpper();
+                Console.Write("\n\nTo: ");
+                string to = Console.ReadLine()!.ToUpper();
 
-				chess.Move(from, to);
+                chess.Move(from, to);
 
-				board.Init();
-			}
-		}
+                from = null;
+
+                board.Init();
+            }
+        }
 	}
 }

@@ -4,26 +4,6 @@ namespace ConsoleChessCSharp
 {
 	public class Chess
 	{
-		public static readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
-		public static readonly byte size = 8;
-		public static char[,]? chessboard;
-		public static bool[,]? isWhite;
-		public static readonly char emptyCell = ' ';
-		public static bool isInit;
-		public static bool isEmptyBoard = false;
-		public static Dictionary<string, Tuple<char, string>> pieces = Pieces();
-		public bool IsEmptyBoard
-		{
-			set
-			{
-				if (isInit == true)
-					throw new Exception("Chessboard has already been initialized");
-				else
-					isEmptyBoard = value;
-			}
-		}
-
-
 		// Convert position to array coordinate values
 		public static void GetPosition(string cellPosition, out byte posX, out byte posY)
 		{
@@ -94,69 +74,62 @@ namespace ConsoleChessCSharp
 
 
 
-		// Add a piece to specific cell
-		public void AddPiece(string cell, Tuple<char, string> value)
-		{
-			pieces.Add(cell, value);
-		}
-
-
-
 		// Move a piece to a specific cell
 		public void Move(string from, string to)
 		{
-			pieces[to] = pieces[from];
-			pieces.Remove(from);
+			var cellFrom = PieceList.Where(t => t.Position.Contains(from)).First();
+
+			PieceList.Add(Pieces.Pieces.AddNewPiece(cellFrom, to));
+			PieceList.Remove(cellFrom);
 		}
 
 
-
-		// List of pieces, assigned to corresponding cells
-		private static Dictionary<string, Tuple<char, string>> Pieces()
+        // List of all the pieces
+        public static readonly List<Pieces.Pieces> PieceList = new()
 		{
-            Dictionary<string, Tuple<char, string>> pieces = new()
-            {
+			// White pieces
+			new Pawn('p', Pieces.Pieces.white, "A2"),
+			new Pawn('p', Pieces.Pieces.white, "B2"),
+			new Pawn('p', Pieces.Pieces.white, "C2"),
+			new Pawn('p', Pieces.Pieces.white, "D2"),
+			new Pawn('p', Pieces.Pieces.white, "E2"),
+			new Pawn('p', Pieces.Pieces.white, "F2"),
+			new Pawn('p', Pieces.Pieces.white, "G2"),
+			new Pawn('p', Pieces.Pieces.white, "H2"),
 
-                // Black pieces
-                ["A8"] = new Tuple<char, string>('r', "black"),
-                ["B8"] = new Tuple<char, string>('k', "black"),
-                ["C8"] = new Tuple<char, string>('b', "black"),
-                ["D8"] = new Tuple<char, string>('q', "black"),
-                ["E8"] = new Tuple<char, string>('K', "black"),
-                ["F8"] = new Tuple<char, string>('b', "black"),
-                ["G8"] = new Tuple<char, string>('k', "black"),
-                ["H8"] = new Tuple<char, string>('r', "black"),
+			new Rook('r', Pieces.Pieces.white, "A1"),
+			new Rook('r', Pieces.Pieces.white, "H1"),
 
-                ["A7"] = new Tuple<char, string>('p', "black"),
-                ["B7"] = new Tuple<char, string>('p', "black"),
-                ["C7"] = new Tuple<char, string>('p', "black"),
-                ["D7"] = new Tuple<char, string>('p', "black"),
-                ["E7"] = new Tuple<char, string>('p', "black"),
-                ["F7"] = new Tuple<char, string>('p', "black"),
-                ["G7"] = new Tuple<char, string>('p', "black"),
-                ["H7"] = new Tuple<char, string>('p', "black"),
+			new Knight('k', Pieces.Pieces.white, "B1"),
+			new Knight('k', Pieces.Pieces.white, "G1"),
 
-                // White pieces
-                ["A1"] = new Tuple<char, string>('r', "white"),
-                ["B1"] = new Tuple<char, string>('k', "white"),
-                ["C1"] = new Tuple<char, string>('b', "white"),
-                ["D1"] = new Tuple<char, string>('q', "white"),
-                ["E1"] = new Tuple<char, string>('K', "white"),
-                ["F1"] = new Tuple<char, string>('b', "white"),
-                ["G1"] = new Tuple<char, string>('k', "white"),
-                ["H1"] = new Tuple<char, string>('r', "white"),
+			new Bishop('b', Pieces.Pieces.white, "C1"),
+			new Bishop('b', Pieces.Pieces.white, "F1"),
 
-                ["A2"] = new Tuple<char, string>('p', "white"),
-                ["B2"] = new Tuple<char, string>('p', "white"),
-                ["C2"] = new Tuple<char, string>('p', "white"),
-                ["D2"] = new Tuple<char, string>('p', "white"),
-                ["E2"] = new Tuple<char, string>('p', "white"),
-                ["F2"] = new Tuple<char, string>('p', "white"),
-                ["G2"] = new Tuple<char, string>('p', "white"),
-                ["H2"] = new Tuple<char, string>('p', "white")
-            };
+			new Queen('q', Pieces.Pieces.white, "E1"),
+			new King('K', Pieces.Pieces.white, "D1"),
 
-            return pieces;
-		}
+			// Black pieces
+			new Pawn('p', Pieces.Pieces.black, "A7"),
+			new Pawn('p', Pieces.Pieces.black, "B7"),
+			new Pawn('p', Pieces.Pieces.black, "C7"),
+			new Pawn('p', Pieces.Pieces.black, "D7"),
+			new Pawn('p', Pieces.Pieces.black, "E7"),
+			new Pawn('p', Pieces.Pieces.black, "F7"),
+			new Pawn('p', Pieces.Pieces.black, "G7"),
+			new Pawn('p', Pieces.Pieces.black, "H7"),
+
+			new Rook('r', Pieces.Pieces.black, "A8"),
+			new Rook('r', Pieces.Pieces.black, "H8"),
+
+			new Knight('k', Pieces.Pieces.black, "B8"),
+			new Knight('k', Pieces.Pieces.black, "G8"),
+
+			new Bishop('b', Pieces.Pieces.black, "C8"),
+			new Bishop('b', Pieces.Pieces.black, "F8"),
+
+			new Queen('q', Pieces.Pieces.black, "E8"),
+			new King('K', Pieces.Pieces.black, "D8"),
+		};
 	}
 }

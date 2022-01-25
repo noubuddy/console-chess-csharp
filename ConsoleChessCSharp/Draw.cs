@@ -3,72 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleChessCSharp.Pieces;
-
 namespace ConsoleChessCSharp
 {
     public class Draw
     {
         const string top = " --------------------------------";
-        //List<(byte, byte)> legalMoves = pieces.legalMoves(from);
+        private readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
+        private readonly byte size = 8;
+        private char[,]? chessboard;
+        private bool[,]? isWhite;
+        private readonly char emptyCell = ' ';
 
-        //              foreach (var moves in legalMoves)
-        //              {
-        //                  Console.WriteLine(moves.Item1 + " - " + moves.Item2);
-        //              }
-
-        // Create (draw) a Chess.chessboard
+        // Create (draw) a chessboard
         public void Init()
         {
             Console.Clear();
-            Chess.isInit = true;
-            Chess.chessboard = new char[Chess.size, Chess.size];
-            Chess.isWhite = new bool[Chess.size, Chess.size];
+            chessboard = new char[size, size];
+            isWhite = new bool[size, size];
 
             AssignEmptyCell();
             AssignNotEmptyCell();
             Update();
         }
 
+
+        // Assign an empty field for all cells 
         private void AssignEmptyCell()
         {
-            // Assign an empty field for all cells
-            for (int i = 0; i < Chess.chessboard.GetLength(0); i++)
-                for (int j = 0; j < Chess.chessboard.GetLength(1); j++)
-                {
-                    Chess.chessboard[i, j] = Chess.emptyCell;
-                }
+            for (int i = 0; i < chessboard.GetLength(0); i++)
+                for (int j = 0; j < chessboard.GetLength(1); j++)
+                    chessboard[i, j] = emptyCell;
         }
 
+
+        // Assign a character of figure for not empty cells
         private void AssignNotEmptyCell()
         {
-            // Assign a character of figure for not empty cells
-            if (!Chess.isEmptyBoard)
+            foreach (var piece in Chess.PieceList)
             {
-                foreach (KeyValuePair<string, Tuple<char, string>> cell in Chess.pieces)
-                {
-                    Chess.GetPosition(cell.Key, out byte posX, out byte posY);
-                    Chess.chessboard[posX, posY] = cell.Value.Item1 != Chess.emptyCell ? cell.Value.Item1 : Chess.emptyCell;
-                    Chess.isWhite[posX, posY] = cell.Value.Item2 == "white";
-                }
+                Chess.GetPosition(piece.Position, out byte posX, out byte posY);
+                chessboard[posX, posY] = piece.Piece != emptyCell ? piece.Piece : emptyCell;
+                isWhite[posX, posY] = piece.Color == "white";
             }
+
         }
 
+
+        // Draw a chessboard in console
         private void Update()
         {
-            // Draw a Chess.chessboard in console
-            for (int y = 0; y < Chess.size; y++)
+            for (int y = 0; y < size; y++)
             {
                 Console.WriteLine("  " + top);
-                Console.Write(" " + (Chess.size - y));
+                Console.Write(" " + (size - y));
 
-                for (int x = 0; x < Chess.size; x++)
+                for (int x = 0; x < size; x++)
                 {
                     Console.Write("|");
 
                     MarkLegalMoves(x, y);
-                    Console.ForegroundColor = !Chess.isWhite[x, y] ? ConsoleColor.DarkGray : ConsoleColor.White;
-                    Console.Write(Chess.chessboard[x, y] != Chess.emptyCell ? " " + Chess.chessboard[x, y] + " " : "   ");
+                    Console.ForegroundColor = !isWhite[x, y] ? ConsoleColor.DarkGray : ConsoleColor.White;
+                    Console.Write(chessboard[x, y] != emptyCell ? " " + chessboard[x, y] + " " : "   ");
+                    // Console.Write(chessboard[x, y] != emptyCell ? x.ToString() + chessboard[x, y] + y.ToString() : x.ToString() + " " + y.ToString());
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
 
@@ -79,27 +75,25 @@ namespace ConsoleChessCSharp
             Console.WriteLine("  " + top);
             Console.Write("   ");
 
-            for (int i = 0; i < Chess.size; i++)
-                Console.Write(" " + Chess.letters[i] + "  ");
+            for (int i = 0; i < size; i++)
+                Console.Write(" " + letters[i] + "  ");
         }
 
+        
+        // Mark (highlight) all legal moves
         public void MarkLegalMoves(int x, int y)
         {
             if (!string.IsNullOrEmpty(Program.from))
             {
-                Piece pieces = new();
-                List<(byte, byte)> legalMoves = pieces.legalMoves(Program.from);
+                var piece = Chess.PieceList.Where(t => t.Position.Contains(Program.from)).First();
+
+                List<(byte, byte)> legalMoves = piece.LegalMoves(Program.from);
 
                 foreach (var lm in legalMoves)
-                {
                     if (x == lm.Item1 && y == lm.Item2)
-                    {
                         Console.BackgroundColor = ConsoleColor.Green;
-                    }
-                }
             }
         }
-
 
     }
 }
