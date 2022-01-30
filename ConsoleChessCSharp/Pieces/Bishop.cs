@@ -11,7 +11,7 @@ namespace ConsoleChessCSharp.Pieces
             List<(byte, byte)> legalMoves = new();
 
             Chess.GetPosition(position, out byte posX, out byte posY);
-            
+
             // Not done yet!!!
 
             // up, left

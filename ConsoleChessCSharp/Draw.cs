@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-namespace ConsoleChessCSharp
+﻿namespace ConsoleChessCSharp
 {
+#nullable disable
     public class Draw
     {
-        const string top = " --------------------------------";
+        private const string top = " --------------------------------";
         private readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
         private readonly byte size = 8;
-        private char[,]? chessboard;
-        private bool[,]? isWhite;
+        private char[,] chessboard;
+        private bool[,] isWhite;
         private readonly char emptyCell = ' ';
 
         // Create (draw) a chessboard
@@ -43,7 +39,7 @@ namespace ConsoleChessCSharp
             {
                 Chess.GetPosition(piece.Position, out byte posX, out byte posY);
                 chessboard[posX, posY] = piece.Piece != emptyCell ? piece.Piece : emptyCell;
-                isWhite[posX, posY] = piece.Color == "white";
+                isWhite[posX, posY] = piece.Color == Pieces.Pieces.white;
             }
 
         }
@@ -79,9 +75,9 @@ namespace ConsoleChessCSharp
                 Console.Write(" " + letters[i] + "  ");
         }
 
-        
+
         // Mark (highlight) all legal moves
-        public void MarkLegalMoves(int x, int y)
+        private void MarkLegalMoves(int x, int y)
         {
             if (!string.IsNullOrEmpty(Program.from))
             {
