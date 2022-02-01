@@ -29,6 +29,21 @@
             };
         }
 
+        public bool LegalMoves(byte posX, byte posY, List<(byte, byte)> pieceList)
+        {
+            if (Draw.chessboard[posX, posY] != Draw.emptyCell)
+            {
+                string cell = Chess.GetCoordinates(posX, posY).ToUpper();
+                var piece = Chess.PieceList.Where(t => t.Position.Contains(cell)).First();
+                if (Color != piece.Color)
+                {
+                    pieceList.Add((posX, posY));
+                }
+                return true;
+            }
+            return false;
+        }
+
         public abstract List<(byte, byte)> LegalMoves(string position);
     }
 }

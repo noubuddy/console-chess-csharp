@@ -37,6 +37,40 @@ namespace ConsoleChessCSharp
         }
 
 
+        // Convert position to array coordinate values
+        public static string GetCoordinates(byte posX, byte posY)
+        {
+            string cell = "";
+
+            cell += posX switch
+            {
+                0 => 'a',
+                1 => 'b',
+                2 => 'c',
+                3 => 'd',
+                4 => 'e',
+                5 => 'f',
+                6 => 'g',
+                7 => 'h',
+                _ => throw new Exception("Some text"),
+            };
+
+            cell += posY switch
+            {
+                0 => '8',
+                1 => '7',
+                2 => '6',
+                3 => '5',
+                4 => '4',
+                5 => '3',
+                6 => '2',
+                7 => '1',
+                _ => throw new Exception("Some text"),
+            };
+
+            return cell;
+        }
+
 
         // Move a piece to a specific cell
         public static void Move(string from, string to)

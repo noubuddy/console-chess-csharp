@@ -6,9 +6,9 @@
         private const string top = " --------------------------------";
         private readonly char[] letters = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' };
         private readonly byte size = 8;
-        private char[,] chessboard;
+        public static char[,] chessboard;
         private bool[,] isWhite;
-        private readonly char emptyCell = ' ';
+        public static readonly char emptyCell = ' ';
 
         // Create (draw) a chessboard
         public void Init()
@@ -60,7 +60,7 @@
                     MarkLegalMoves(x, y);
                     Console.ForegroundColor = !isWhite[x, y] ? ConsoleColor.DarkGray : ConsoleColor.White;
                     Console.Write(chessboard[x, y] != emptyCell ? " " + chessboard[x, y] + " " : "   ");
-                    // Console.Write(chessboard[x, y] != emptyCell ? x.ToString() + chessboard[x, y] + y.ToString() : x.ToString() + " " + y.ToString());
+                    //Console.Write(chessboard[x, y] != emptyCell ? x.ToString() + chessboard[x, y] + y.ToString() : x.ToString() + " " + y.ToString());
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
 
